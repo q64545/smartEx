@@ -10,7 +10,7 @@ import os
 
 def main():
     train_flow = train_FM_single_cpu()
-    train_flow.run_train_flow()
+    train_flow.run_test_flow()
 
 
 if __name__ == "__main__":

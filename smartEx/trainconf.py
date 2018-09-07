@@ -19,11 +19,13 @@ from smartEx.data_process import *
 
 trainconf_FM = dict(
     # 数据入口
-    data_train_path = "smartEx/data/kaggle_data/",
+    data_train_path = "smartEx/data/kaggle_data_train",
 
-    data_test_path = "",
+    data_test_path = "smartEx/data/kaggle_data_test",
     # 数据入口方法
-    data_input_fn = testLineDataset,
+    data_input_fn_train = inputWithDataset,
+
+    data_input_fn_test = inputWithPandas,
     # 设置批量大小
     batch_size = 200,
     # 设置模型类型
@@ -63,13 +65,13 @@ trainconf_FM = dict(
     single_feature_index = 0,
 
     # 隐向量长度k, k<<n, 一般为100以内
-    k=40,
+    k=70,
 
     # 参数初始化器
     initializer=tf.truncated_normal_initializer(stddev=1.0),
 
     # 设置优化器参数
-    learning_rate=0.001,
+    learning_rate=0.002,
 
     epochs = 2,
 

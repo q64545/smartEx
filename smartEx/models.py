@@ -44,7 +44,7 @@ class Factorization_Machine(model):
         super(Factorization_Machine, self).__init__(graph, param_dict)
 
 
-    def build_inference(self, x_one_hot):
+    def build_inference(self, x_one_hot, mode="train"):
         with self.graph.as_default():
             # 定义待学习参数 w0, w1,...,wn, v1,...,vn
             initializer = self.param_dict["initializer"]
