@@ -66,15 +66,16 @@ def inputWithPandas_batches(file_path, batch_size):
     import pandas as pd
     df = pd.read_csv(file_path, header=0, dtype=str, engine='c')
     data = df.values
-    data = data[:15000]
     y_ = data[:, 1:2]
     x = data[:, 2:]
     X = []
     Y_ = []
-    # waiting for developing ........................
-    # waiting for developing ........................
-    # waiting for developing ........................
-    # waiting for developing ........................
+    nums = x.shape[0]
+    n_batches = int(nums / batch_size)
+
+    for i in xrange(n_batches):
+        X.append(x[i*batch_size: (i+1)*batch_size])
+        Y_.append(y_[i*batch_size: (i+1)*batch_size])
     return Y_, X
 
 

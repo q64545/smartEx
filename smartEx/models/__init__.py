@@ -11,3 +11,4 @@ if version_info.major != 2 and version_info.minor != 7:
 
 
 from smartEx.models.Factorization_Machine import *
+from smartEx.models.Fieldaware_Factorization_Machine import *

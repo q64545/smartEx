@@ -59,15 +59,15 @@ trainconf = dict(
     #              64,        # C21                   60
     # ],
 
-    hash_size = 2**18,
+    hash_size = 2**15,
 
-    # 对特定特征进行处理
-    feature_engineer_single_feature = SingleFeature_Hour,
-
-    single_feature_index = 0,
+    # # 对特定特征进行处理
+    # feature_engineer_single_feature = SingleFeature_Hour,
+    #
+    # single_feature_index = 0,
 
     # 隐向量长度k, k<<n, 一般为100以内
-    k=70,
+    k=4,
 
     # 参数初始化器
     initializer=tf.truncated_normal_initializer(stddev=1.0),

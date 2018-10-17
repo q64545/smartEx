@@ -16,6 +16,8 @@ from smartEx.conf_parse import *
 import os
 import time
 import sys
+import numpy as np
+from sklearn import metrics
 
 
 class Train_with_single_cpu(Train):
@@ -50,7 +52,7 @@ class Train_with_single_cpu(Train):
             batch_size_eval = self.param_dict["batch_size_eval"]
             Y_, X = data_input_fn_test(data_test_path, batch_size_eval)
             with self.graph.as_default():
-                x = tf.placeholder(dtype=tf.string, shape=[batch_size_eval, X.shape[1]], name='test_input_x')
+                x = tf.placeholder(dtype=tf.string, shape=[batch_size_eval, X[0].shape[1]], name='test_input_x')
                 y_ = tf.placeholder(dtype=tf.float32, shape=[batch_size_eval, 1], name='test_input_y')
             return Y_, X, y_, x
         else:
@@ -64,18 +66,14 @@ class Train_with_single_cpu(Train):
         feature_engineer_string_to_one_hot = self.param_dict["feature_engineer_string_conversion"]
         feature_enginerr = feature_engineer_string_to_one_hot(self.graph, self.param_dict, use_tag, self.batch_size)
         x_one_hot = feature_enginerr.transform(x)
-        # 对特征hour进行特殊处理
-        feature_engineer_single_feature = self.param_dict["feature_engineer_single_feature"]
-        feature_enginerr2 = feature_engineer_single_feature(self.graph, self.param_dict, use_tag, self.batch_size)
-        x_hour = feature_enginerr2.transform(x)
-        return tf.concat([x_hour, x_one_hot], 1)
+        return x_one_hot
 
 
     def _inference(self, x, y_, mode="train"):
         # 构建前向传播计算图
         model_type = self.param_dict["model_type"]
         # 设定所示用模型
-        self.model = model_type(self.graph, self.param_dict)
+        self.model = model_type(self.graph, self.param_dict, self.batch_size)
         self.model.build_inference(x, mode)
         loss = self.model.get_loss(y_)
         return self.model.prob, loss
@@ -176,6 +174,7 @@ class Train_with_single_cpu(Train):
 
         # get test data
         Y_, X, y_, x = self._set_data_input()
+        YY_ = reduce(lambda a, b: np.r_[a, b], Y_).astype(int)
 
 
 
@@ -204,7 +203,19 @@ class Train_with_single_cpu(Train):
                 if ckpt and ckpt.model_checkpoint_path:
                     saver.restore(self.sess, ckpt.model_checkpoint_path)
                     global_step = ckpt.model_checkpoint_path.split('/')[-1].split('-')[-1]
-                    auc_v, loss_v, pctr_mean_v = self.sess.run([auc, loss, pctr_mean], feed_dict={y_: Y_, x: X})
-                    print("After %s training step(s), AUC score = %g, loss = %g, mean pctr = %g" % (global_step, auc_v, loss_v, pctr_mean_v))
+                    Y = []
+                    LOSS = []
+                    PCTR_MEAN = []
+                    for x_i, y_i in zip(X, Y_):
+                        y_v_i, loss_v, pctr_mean_v = self.sess.run([y, loss, pctr_mean], feed_dict={y_: y_i, x: x_i})
+                        Y.append(y_v_i)
+                        LOSS.append(loss_v)
+                        PCTR_MEAN.append(pctr_mean_v)
+                    Y = reduce(lambda a, b: np.r_[a, b], Y)
+                    fpr, tpr, thresholds = metrics.roc_curve(y_true=YY_.flatten(), y_score=Y.flatten())
+                    auc_scroe = metrics.auc(fpr, tpr)
+
+
+                    print("After %s training step(s), AUC score = %g" % (global_step, auc_scroe))
                 else:
                     print('No checkpoint file found')

@@ -5,14 +5,24 @@ from __future__ import print_function   # 加入该特性后使用print应该加
 # __future__这个包旨在加入后续版本的语言特性
 __author__ = "zeng pan"
 
-from smartEx.train import *
+# from conf.configure import trainconf
 import os
+from importlib import import_module
+import argparse
 
-def main():
-    train_flow = train_FM_single_cpu()
+
+def main(args):
+    trainScript = args.trainConfure
+    print("training configure is conf/{}.py".format(trainScript))
+    trainconf = import_module("conf."+trainScript).trainconf    # get train configure dict
+
+    train_flow = trainconf["train_type"](trainconf)
     train_flow.run_test_flow()
 
 
 if __name__ == "__main__":
     print(os.getcwd())
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-c', '--trainConfure', type=str, default="configure_FM")   # get training configure
+    args = parser.parse_args()
+    main(args)

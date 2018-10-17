@@ -17,11 +17,12 @@ class Model(object):
 
     __metaclass__ = ABCMeta
 
-    def __init__(self, graph, param_dict):
+    def __init__(self, graph, param_dict, bstch_size):
         self.graph = graph
         self.param_dict = param_dict
         self.logit = None
         self.prob = None
+        self.batch_size = bstch_size
 
     def get_weight_variable(self, shape, regularizer, initializer, name="weights"):
         weights = tf.get_variable(name, shape, initializer=initializer, dtype=tf.float32)
