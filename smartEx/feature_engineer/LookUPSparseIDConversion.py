@@ -18,6 +18,10 @@ class LookUPSparseIDConversion(FeatureEngineer):
         super(LookUPSparseIDConversion, self).__init__(graph, param_dict, use_tag, batch_size)
 
     def transform(self, x):
+        """
+        :param x: tensor of string, E.g "a,b,c"
+        :return:  list of ids(tensor), E.g [tensor(123), tensor(342), tensor(532)]
+        """
         hash_size = self.param_dict["hash_size"]
         with self.graph.as_default():
             x_sparse = []

@@ -20,6 +20,7 @@ class Factorization_Machine(Model):
 
 
     def build_inference(self, x, mode="train"):
+        # must use LookUPSparseConversion
         with self.graph.as_default():
             # 定义待学习参数 w0, w1,...,wn, v1,...,vn
             initializer = self.param_dict["initializer"]

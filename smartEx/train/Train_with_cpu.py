@@ -20,12 +20,12 @@ import numpy as np
 from sklearn import metrics
 
 
-class Train_with_single_cpu(Train):
+class Train_with_cpu(Train):
     """
     模型的单cpu训练流程
     """
     def __init__(self, raw_param_dict):
-        super(Train_with_single_cpu, self).__init__(raw_param_dict)
+        super(Train_with_cpu, self).__init__(raw_param_dict)
         # 获取模型训练参数
         self.param_dict = self._parse_trainconf()
 
@@ -59,14 +59,14 @@ class Train_with_single_cpu(Train):
             pass
 
 
-    def _feature_engineer(self, x):
+    def _feature_engineer(self, x_raw):
         # 对数据进行特征工程
         # 对稀疏特征转换one hot
         use_tag = self.use_tag
         feature_engineer_string_to_one_hot = self.param_dict["feature_engineer_string_conversion"]
         feature_enginerr = feature_engineer_string_to_one_hot(self.graph, self.param_dict, use_tag, self.batch_size)
-        x_one_hot = feature_enginerr.transform(x)
-        return x_one_hot
+        x = feature_enginerr.transform(x_raw)
+        return x
 
 
     def _inference(self, x, y_, mode="train"):
@@ -104,13 +104,13 @@ class Train_with_single_cpu(Train):
 
         with self.graph.device("/cpu:1"):
             # 获取模型数据入口
-            y_, x = self._set_data_input()
+            y_, x_raw = self._set_data_input()
 
             # 对输入进行特征工程
-            x_one_hot = self._feature_engineer(x)
+            x = self._feature_engineer(x_raw)
 
             # 构建前向传播计算图
-            y, loss = self._inference(x_one_hot, y_, "train")
+            y, loss = self._inference(x, y_, "train")
 
             # 获取训练OP
             train_op = self._get_train_op(loss)
@@ -145,7 +145,7 @@ class Train_with_single_cpu(Train):
                         # debug: end
                         if step != 0 and step % 50 == 0:
                             start_time = time.time()
-                            _, loss_value = self.sess.run([train_op,loss])
+                            _, loss_value = self.sess.run([train_op, loss])
                             duration = time.time() - start_time
                             print("step {}, loss = {} ({} sec/batch)".format(step, loss_value, duration))
                             summary = self.sess.run(summary_op)

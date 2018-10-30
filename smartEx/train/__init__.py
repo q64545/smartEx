@@ -9,4 +9,4 @@ from sys import version_info
 if version_info.major != 2 and version_info.minor != 7:
     raise Exception('请使用Python 2.7')
 
-from smartEx.train.Train_with_single_cpu import *
+from smartEx.train.Train_with_cpu import *

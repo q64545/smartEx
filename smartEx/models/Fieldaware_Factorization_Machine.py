@@ -25,7 +25,7 @@ class Fieldaware_Factorization_Machine(Model):
         k = self.param_dict["k"]
         hash_size = self.param_dict["hash_size"]
         regularizer = self.param_dict["regularizer"]
-        batch_size = self.batch_size
+        # batch_size = self.batch_size
 
         with self.graph.as_default():
             with tf.variable_scope("Fieldaware_Factorization_Machine_inference"):
@@ -43,12 +43,12 @@ class Fieldaware_Factorization_Machine(Model):
                 for i in xrange(len(V)):
                     for j in xrange(i+1, len(V)):
                         VV.append(tf.reduce_sum(tf.multiply(V[j][i], V[i][j]), 1))
-                ffm2 = tf.reduce_sum(VV)
+                ffm2 = reduce(lambda a, b: a+b, VV)
                 # define w0
                 w0 = tf.get_variable("w0", shape=[], initializer=initializer)
                 # define w1
                 w1 = tf.get_variable("w1", shape=[hash_size, 1], regularizer=regularizer, initializer=initializer)
-                ffm1 = tf.reduce_sum(tf.reshape(tf.nn.embedding_lookup(w1, x), [-1, 22]), 1)
+                ffm1 = tf.reduce_sum(tf.reshape(tf.nn.embedding_lookup(w1, x), [-1, num_feilds]), 1)
                 ffm = w0 + ffm1 + ffm2
                 self.logit = ffm
                 self.prob = tf.nn.sigmoid(ffm)

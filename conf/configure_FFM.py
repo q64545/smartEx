@@ -28,7 +28,7 @@ trainconf = dict(
     model_type = Fieldaware_Factorization_Machine,
 
     # 设置训练类型
-    train_type = Train_with_single_cpu,
+    train_type = Train_with_cpu,
 
     # 稀疏数据配置
     # feature_engineer_string_conversion = stringToOneHot,
