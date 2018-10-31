@@ -20,14 +20,27 @@ class Logistic_Regression(Model):
         super(Logistic_Regression, self).__init__(graph, param_dict, batch_size)
 
     def build_inference(self, x, mode="train"):
-        # must use LookUPSparseConversion
+        """must use LookUPSparseConversion"""
         initializer = self.param_dict["initializer"]
-        k = self.param_dict["k"]
         hash_size = self.param_dict["hash_size"]
         regularizer = self.param_dict["regularizer"]
         batch_size = self.batch_size
 
 
+        with self.graph.as_default():
+            with tf.variable_scope("Logistic_Regression"):
+                w = tf.get_variable("weight", shape=[hash_size, 1], regularizer=regularizer, initializer=initializer)
+                b = tf.get_variable("biases", shape=[], initializer=initializer)
+                lr = tf.matmul(x, w) + b
+                self.logit = lr
+                self.prob = tf.nn.sigmoid(lr)
+
 
     def get_loss(self, y_):
-        pass
+        with self.graph.as_default():
+            with tf.name_scope("cross_entropy_loss_regularization"):
+                prob = self.prob
+                cross_entropy = -tf.reduce_mean(y_ * tf.log(tf.clip_by_value(prob, 1e-10, 1.0)) + (1 - y_) * tf.log(tf.clip_by_value(1 - prob, 1e-10, 1.0)))
+                regularization_loss = tf.add_n(self.graph.get_collection("regularization_losses"))
+                loss = cross_entropy+regularization_loss
+        return loss

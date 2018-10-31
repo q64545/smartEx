@@ -9,8 +9,21 @@ from sys import version_info
 if version_info.major != 2 and version_info.minor != 7:
     raise Exception('请使用Python 2.7')
 
-from smartEx.data_process import *
-from smartEx.feature_conversion import *
-from smartEx.feature_pipeline import *
-from smartEx.models import *
-from smartEx.train import *
+from abc import ABCMeta, abstractmethod
+
+
+
+class FeaturePipe(object):
+    __metaclass__ = ABCMeta
+
+    def __init__(self, graph, param_dict, use_tag, batch_size):
+        self.graph = graph
+        self.param_dict = param_dict
+        self.use_tag = use_tag
+        self.batch_size = batch_size
+
+
+    @abstractmethod
+    def transform(self, x): pass
+
+

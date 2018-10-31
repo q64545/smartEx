@@ -9,8 +9,7 @@ from sys import version_info
 if version_info.major != 2 and version_info.minor != 7:
     raise Exception('请使用Python 2.7')
 
-from smartEx.data_process import *
-from smartEx.feature_conversion import *
-from smartEx.feature_pipeline import *
-from smartEx.models import *
-from smartEx.train import *
+
+from smartEx.feature_conversion.LookUPSparseConversion import *
+from smartEx.feature_conversion.SingleFeature_Hour import *
+from smartEx.feature_conversion.LookUPSparseIDConversion import *

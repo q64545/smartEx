@@ -20,15 +20,18 @@ class Factorization_Machine(Model):
 
 
     def build_inference(self, x, mode="train"):
-        # must use LookUPSparseConversion
+        """must use LookUPSparseConversion"""
         with self.graph.as_default():
             # 定义待学习参数 w0, w1,...,wn, v1,...,vn
             initializer = self.param_dict["initializer"]
+            regularizer = self.param_dict["regularizer"]
+            hash_size = self.param_dict["hash_size"]
+
             k = self.param_dict["k"]
             with tf.variable_scope("Factorization_Machine_inference"):
                 w0 = tf.get_variable("w0", shape=[], initializer=initializer)
-                w = self.get_weight_variable(shape=[x.shape[1].value, 1], regularizer=None, initializer=initializer, name="w")
-                v = self.get_weight_variable(shape=[x.shape[1].value, k], regularizer=None, initializer=initializer, name="v")
+                w = self.get_weight_variable(shape=[hash_size, 1], regularizer=regularizer, initializer=initializer, name="w")
+                v = self.get_weight_variable(shape=[hash_size, k], regularizer=regularizer, initializer=initializer, name="v")
                 y_part1 = w0 + tf.matmul(x, w)
                 sum_k = []
                 for i in xrange(k):
@@ -40,7 +43,9 @@ class Factorization_Machine(Model):
 
     def get_loss(self, y_):
         with self.graph.as_default():
-            with tf.name_scope("cross_entropy_loss"):
+            with tf.name_scope("cross_entropy_loss_regularization"):
                 prob = self.prob
                 cross_entropy = -tf.reduce_mean(y_ * tf.log(tf.clip_by_value(prob, 1e-10, 1.0)) + (1 - y_) * tf.log(tf.clip_by_value(1 - prob, 1e-10, 1.0)))
-        return cross_entropy
+                regularization_loss = tf.add_n(self.graph.get_collection("regularization_losses"))
+                loss = cross_entropy+regularization_loss
+        return loss

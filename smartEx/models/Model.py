@@ -27,7 +27,7 @@ class Model(object):
     def get_weight_variable(self, shape, regularizer, initializer, name="weights"):
         weights = tf.get_variable(name, shape, initializer=initializer, dtype=tf.float32)
         if regularizer != None:
-            tf.add_to_collection('losses', regularizer(weights))
+            tf.add_to_collection("regularization_losses", regularizer(weights))
         return weights
 
     @abstractmethod

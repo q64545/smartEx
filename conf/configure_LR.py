@@ -25,14 +25,13 @@ trainconf = dict(
 
     batch_size_eval = 200,
     # 设置模型类型
-    model_type = Factorization_Machine,
+    model_type = Logistic_Regression,
 
     # 设置训练类型
     train_type = Train_with_cpu,
 
     # 特征数据流设置
     feature_pipeline_type = FeatureSingeConversionPipeline,
-
     # 稀疏数据配置
     feature_conversion = LookUPSparseConversion,
 
@@ -42,9 +41,6 @@ trainconf = dict(
     # feature_engineer_single_feature = SingleFeature_Hour,
     #
     # single_feature_index = 0,
-
-    # 隐向量长度k, k<<n, 一般为100以内
-    k=4,
 
     # 参数初始化器
     initializer=tf.truncated_normal_initializer(stddev=1.0),

@@ -30,9 +30,11 @@ trainconf = dict(
     # 设置训练类型
     train_type = Train_with_cpu,
 
+    # 特征数据流设置
+    feature_pipeline_type = FeatureSingeConversionPipeline,
     # 稀疏数据配置
     # feature_engineer_string_conversion = stringToOneHot,
-    feature_engineer_string_conversion = LookUPSparseIDConversion,
+    feature_conversion = LookUPSparseIDConversion,
 
     # hash_dict = [
     #              -1,        # hour
@@ -76,7 +78,7 @@ trainconf = dict(
     initializer=tf.truncated_normal_initializer(stddev=1.0),
 
     # 设置优化器参数
-    learning_rate=0.002,
+    learning_rate=0.1,
 
     epochs = 2,
 

@@ -62,9 +62,13 @@ class Train_with_cpu(Train):
     def _feature_engineer(self, x_raw):
         # 对数据进行特征工程
         # 对稀疏特征转换one hot
-        use_tag = self.use_tag
-        feature_engineer_string_to_one_hot = self.param_dict["feature_engineer_string_conversion"]
-        feature_enginerr = feature_engineer_string_to_one_hot(self.graph, self.param_dict, use_tag, self.batch_size)
+        # use_tag = self.use_tag
+        # feature_engineer_string_to_one_hot = self.param_dict["feature_engineer_string_conversion"]
+        # feature_enginerr = feature_engineer_string_to_one_hot(self.graph, self.param_dict, use_tag, self.batch_size)
+        # x = feature_enginerr.transform(x_raw)
+
+        feature_engineer_type = self.param_dict["feature_pipeline_type"]
+        feature_enginerr = feature_engineer_type(self.graph, self.param_dict, self.use_tag, self.batch_size)
         x = feature_enginerr.transform(x_raw)
         return x
 

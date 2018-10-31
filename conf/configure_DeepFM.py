@@ -30,8 +30,10 @@ trainconf = dict(
     # 设置训练类型
     train_type = Train_with_cpu,
 
+    # 特征数据流设置
+    feature_pipeline_type=FeatureSingeConversionPipeline,
     # 稀疏数据配置
-    feature_engineer_string_conversion = LookUPSparseIDConversion,
+    feature_conversion=LookUPSparseIDConversion,
 
     # 稀疏数据的最维数
     hash_size = 2**15,
@@ -53,7 +55,7 @@ trainconf = dict(
     initializer=tf.truncated_normal_initializer(stddev=1.0),
 
     # 设置优化器参数
-    learning_rate=0.02,
+    learning_rate=0.1,
 
     # 数据的轮数
     epochs = 2,

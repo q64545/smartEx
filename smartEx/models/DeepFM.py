@@ -20,7 +20,7 @@ class DeepFM(Model):
         super(DeepFM, self).__init__(graph, param_dict, batch_size)
 
     def build_inference(self, x, mode="train"):
-        # must use LookUPSparseIDConversion
+        """must use LookUPSparseIDConversion"""
         initializer = self.param_dict["initializer"]
         k = self.param_dict["k"]
         hash_size = self.param_dict["hash_size"]
@@ -70,7 +70,9 @@ class DeepFM(Model):
 
     def get_loss(self, y_):
         with self.graph.as_default():
-            with tf.name_scope("cross_entropy_loss"):
+            with tf.name_scope("cross_entropy_loss_regularization"):
                 prob = self.prob
                 cross_entropy = -tf.reduce_mean(y_ * tf.log(tf.clip_by_value(prob, 1e-10, 1.0)) + (1 - y_) * tf.log(tf.clip_by_value(1 - prob, 1e-10, 1.0)))
-        return cross_entropy
+                regularization_loss = tf.add_n(self.graph.get_collection("regularization_losses"))
+                loss = cross_entropy+regularization_loss
+        return loss
