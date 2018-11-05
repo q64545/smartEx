@@ -25,32 +25,39 @@ trainconf = dict(
 
     batch_size_eval = 200,
     # 设置模型类型
-    model_type = Logistic_Regression,
+    model_type = MLPWithEmbedding,
 
     # 设置训练类型
     train_type = Train_with_cpu,
 
     # 特征数据流设置
-    feature_pipeline_type = FeatureSingeConversionPipeline,
+    feature_pipeline_type=FeatureSingeConversionPipeline,
     # 稀疏数据配置
-    feature_conversion = LookUPSparseConversion,
+    feature_conversion=LookUPSparseIDConversion,
 
-    hash_size = 2**18,
+    # 稀疏数据的最维数
+    hash_size = 2**15,
 
-    # # 对特定特征进行处理
-    # feature_engineer_single_feature = SingleFeature_Hour,
-    #
-    # single_feature_index = 0,
+    # 设置Embedding大小
+    emb_size = 4,
 
-    # 参数初始化器
-    initializer=tf.truncated_normal_initializer(stddev=1.0),
+    # deep部分配置
+    hidden_layers = [258, 128, 50],
+    hidden_act = tf.nn.relu,
+
+    # 输出层配置
+    output_act = tf.nn.sigmoid,
 
     # 正则项惩罚
     regularizer = tf.contrib.layers.l2_regularizer(0.0001),
 
+    # 参数初始化器
+    initializer=tf.truncated_normal_initializer(stddev=1.0),
+
     # 设置优化器参数
     learning_rate=0.1,
 
+    # 数据的轮数
     epochs = 2,
 
     max_iteration = 100000,

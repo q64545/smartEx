@@ -34,9 +34,9 @@ trainconf = dict(
     feature_pipeline_type = FeatureSingeConversionPipeline,
 
     # 稀疏数据配置
-    feature_conversion = LookUPSparseConversion,
+    feature_conversion = LookUPSparseIDConversion,
 
-    hash_size = 2**15,
+    hash_size = 2**18,
 
     # # 对特定特征进行处理
     # feature_engineer_single_feature = SingleFeature_Hour,
@@ -53,7 +53,7 @@ trainconf = dict(
     regularizer = tf.contrib.layers.l2_regularizer(0.0001),
 
     # 设置优化器参数
-    learning_rate=0.1,
+    learning_rate=0.02,
 
     epochs = 2,
 

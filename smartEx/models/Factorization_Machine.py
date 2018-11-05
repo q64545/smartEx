@@ -20,7 +20,7 @@ class Factorization_Machine(Model):
 
 
     def build_inference(self, x, mode="train"):
-        """must use LookUPSparseConversion"""
+        """must use LookUPSparseIDConversion"""
         with self.graph.as_default():
             # 定义待学习参数 w0, w1,...,wn, v1,...,vn
             initializer = self.param_dict["initializer"]
@@ -29,17 +29,30 @@ class Factorization_Machine(Model):
 
             k = self.param_dict["k"]
             with tf.variable_scope("Factorization_Machine_inference"):
-                w0 = tf.get_variable("w0", shape=[], initializer=initializer)
-                w = self.get_weight_variable(shape=[hash_size, 1], regularizer=regularizer, initializer=initializer, name="w")
-                v = self.get_weight_variable(shape=[hash_size, k], regularizer=regularizer, initializer=initializer, name="v")
-                y_part1 = w0 + tf.matmul(x, w)
-                sum_k = []
-                for i in xrange(k):
-                    v_i = v[:, i:i+1]
-                    sum_k.append(tf.square(tf.matmul(x, v_i)) - tf.matmul(tf.square(x), tf.square(v_i)))
-                y_part2 = 1/2 * tf.reduce_sum(sum_k, 0)
-                self.logit = y_part1 + y_part2
-                self.prob = tf.nn.sigmoid(self.logit)
+                with tf.variable_scope("Embedding_part"):
+                    emb_v = tf.get_variable(shape=[hash_size, k], regularizer=None, initializer=initializer, name="FM_Embedding_Vector")
+                    V = [tf.nn.embedding_lookup(emb_v, x_i) for x_i in x]
+
+
+                with tf.variable_scope("FM_laryer"):
+                    num_feilds = len(V)
+                    w_0 = tf.get_variable("w0", shape=[], initializer=initializer)
+                    w_1 = tf.get_variable("w1", shape=[hash_size, 1], regularizer=regularizer, initializer=initializer)
+
+                    # 公式版FM
+                    fm2 = (tf.reduce_sum(tf.pow(tf.reduce_sum(V, 0), 2), 1) - tf.reduce_sum(
+                        tf.reduce_sum(tf.pow(V, 2), 0), 1)) / 2
+                    # 累加二次项版FM
+                    # VV = []
+                    # for i in xrange(num_feilds):
+                    #     for j in xrange(i + 1, num_feilds):
+                    #         VV.append(tf.reduce_sum(tf.multiply(V[i], V[i]), 1))
+                    # fm2 = reduce(lambda a, b: a+b, VV)
+                    fm2 = tf.expand_dims(fm2, 1)
+                    fm1 = tf.reduce_sum(tf.nn.embedding_lookup(w_1, x), 0)
+                    fm = w_0 + fm1 + fm2
+                    self.logit = fm
+                    self.prob = tf.nn.sigmoid(fm)
 
     def get_loss(self, y_):
         with self.graph.as_default():
