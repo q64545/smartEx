@@ -80,21 +80,21 @@ def inputWithPandas_batches(file_path, batch_size):
 
 
 
-# def testContribDataset(file_path, batch_size, epochs):
-#     # 获取file_path下的文件列表
-#     # files = tf.train.match_filenames_once(file_path)
-#     files = map(lambda p: os.path.join(file_path, p), os.listdir(file_path))
-#     # dataset = tf.contrib.data.Dataset.from_tensor_slices(files)
-#     # dataset = dataset.flat_map(lambda filename: tf.contrib.data.TextLineDataset(filename))
-#     dataset = tf.contrib.data.TextLineDataset(files)
-#     dataset = dataset.map(_parse_csv_data)
-#     dataset = dataset.shuffle(buffer_size=50000)
-#     dataset = dataset.batch(batch_size)
-#     dataset = dataset.repeat(epochs)
-#     iterator_final = dataset.make_one_shot_iterator()
-#     next_batch_final = iterator_final.get_next()
-#     y_, x = next_batch_final
-#     return y_, x
+def testContribDataset(file_path, batch_size, epochs):
+    # 获取file_path下的文件列表
+    # files = tf.train.match_filenames_once(file_path)
+    files = map(lambda p: os.path.join(file_path, p), os.listdir(file_path))
+    # dataset = tf.contrib.data.Dataset.from_tensor_slices(files)
+    # dataset = dataset.flat_map(lambda filename: tf.contrib.data.TextLineDataset(filename))
+    dataset = tf.contrib.data.TextLineDataset(files)
+    dataset = dataset.map(_parse_csv_data)
+    dataset = dataset.shuffle(buffer_size=50000)
+    dataset = dataset.batch(batch_size)
+    dataset = dataset.repeat(epochs)
+    iterator_final = dataset.make_one_shot_iterator()
+    next_batch_final = iterator_final.get_next()
+    y_, x = next_batch_final
+    return y_, x
 
 
 

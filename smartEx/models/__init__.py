@@ -16,3 +16,4 @@ from smartEx.models.Logistic_regression import *
 from smartEx.models.DeepFM import *
 from smartEx.models.MLPWithEmbedding import *
 from smartEx.models.Neural_Factorization_Machine import *
+from smartEx.models.Wide_n_Deep import *

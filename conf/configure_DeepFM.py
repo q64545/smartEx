@@ -21,9 +21,9 @@ trainconf = dict(
 
     data_input_fn_test = inputWithPandas_batches,
     # 设置批量大小
-    batch_size = 200,
+    batch_size = 400,
 
-    batch_size_eval = 200,
+    batch_size_eval = 400,
     # 设置模型类型
     model_type = DeepFM,
 
@@ -38,24 +38,24 @@ trainconf = dict(
     # 稀疏数据的最维数
     hash_size = 2**20,
 
-    # deep部分配置
-    hidden_layers = [258, 128, 50],
-    hidden_act = tf.nn.relu,
-
     # 隐向量长度k, k<<n, 一般为100以内
-    k=16,
+    k=8,
+
+    # deep部分配置
+    hidden_layers = [128, 64, 32],
+    hidden_act = tf.nn.relu,
 
     # 输出层配置
     output_act = tf.nn.sigmoid,
 
     # 正则项惩罚
-    regularizer = tf.contrib.layers.l2_regularizer(0.0001),
+    regularizer = tf.contrib.layers.l1_l2_regularizer(scale_l1=0.0, scale_l2=0.01),
 
     # 参数初始化器
     initializer=tf.truncated_normal_initializer(stddev=1.0),
 
     # 设置优化器参数
-    learning_rate=0.0002,
+    learning_rate=0.01,
 
     # 数据的轮数
     epochs = 2,

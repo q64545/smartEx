@@ -36,7 +36,7 @@ trainconf = dict(
     # 稀疏数据配置
     feature_conversion = LookUPSparseIDConversion,
 
-    hash_size = 2**18,
+    hash_size = 2**20,
 
     # # 对特定特征进行处理
     # feature_engineer_single_feature = SingleFeature_Hour,
@@ -44,16 +44,16 @@ trainconf = dict(
     # single_feature_index = 0,
 
     # 隐向量长度k, k<<n, 一般为100以内
-    k=4,
+    k=8,
 
     # 参数初始化器
     initializer=tf.truncated_normal_initializer(stddev=1.0),
 
     # 正则项惩罚
-    regularizer = tf.contrib.layers.l2_regularizer(0.0001),
+    regularizer = tf.contrib.layers.l1_l2_regularizer(scale_l1=0.0, scale_l2=0.01),
 
     # 设置优化器参数
-    learning_rate=0.02,
+    learning_rate=0.1,
 
     epochs = 2,
 

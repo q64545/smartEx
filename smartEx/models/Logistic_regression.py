@@ -20,7 +20,7 @@ class Logistic_Regression(Model):
         super(Logistic_Regression, self).__init__(graph, param_dict, batch_size)
 
     def build_inference(self, x, mode="train"):
-        """must use LookUPSparseConversion"""
+        """must use LookUPSparseIDConversion"""
         initializer = self.param_dict["initializer"]
         hash_size = self.param_dict["hash_size"]
         regularizer = self.param_dict["regularizer"]
@@ -31,7 +31,8 @@ class Logistic_Regression(Model):
             with tf.variable_scope("Logistic_Regression"):
                 w = tf.get_variable("weight", shape=[hash_size, 1], regularizer=regularizer, initializer=initializer)
                 b = tf.get_variable("biases", shape=[], initializer=initializer)
-                lr = tf.matmul(x, w) + b
+                w_x = [tf.nn.embedding_lookup(w, x_i) for x_i in x]
+                lr = tf.reduce_sum(w_x, 0)+b
                 self.logit = lr
                 self.prob = tf.nn.sigmoid(lr)
 

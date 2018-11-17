@@ -33,7 +33,7 @@ trainconf = dict(
     # 特征数据流设置
     feature_pipeline_type = FeatureSingeConversionPipeline,
     # 稀疏数据配置
-    feature_conversion = LookUPSparseConversion,
+    feature_conversion = LookUPSparseIDConversion,
 
     hash_size = 2**18,
 
@@ -46,7 +46,7 @@ trainconf = dict(
     initializer=tf.truncated_normal_initializer(stddev=1.0),
 
     # 正则项惩罚
-    regularizer = tf.contrib.layers.l2_regularizer(0.0001),
+    regularizer = tf.contrib.layers.l1_l2_regularizer(scale_l1=0.0, scale_l2=0.01),
 
     # 设置优化器参数
     learning_rate=0.1,

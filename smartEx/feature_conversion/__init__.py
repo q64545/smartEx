@@ -13,3 +13,4 @@ if version_info.major != 2 and version_info.minor != 7:
 from smartEx.feature_conversion.LookUPSparseConversion import *
 from smartEx.feature_conversion.SingleFeature_Hour import *
 from smartEx.feature_conversion.LookUPSparseIDConversion import *
+from smartEx.feature_conversion.LookUPSparseIDWithInteractionConversion import *

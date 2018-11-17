@@ -24,7 +24,7 @@ class LookUPSparseConversion(FeatureConversion):
             x_sparse = []
             with tf.name_scope("sparse_lookup"):
                 for i in xrange(x.shape[1].value):
-                    x_i = tf.string_to_hash_bucket_fast(input="feature_{}_".format(i) + x[:, i], num_buckets=hash_size, name="sparse_feature_{}".format(i))
+                    x_i = tf.string_to_hash_bucket_fast(input="f{}_".format(i) + x[:, i], num_buckets=hash_size, name="sparse_feature_{}".format(i))
                     x_sparse.append(x_i)
 
             dense_size = batch_size * x.shape[1].value

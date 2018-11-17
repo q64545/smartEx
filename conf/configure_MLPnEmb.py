@@ -36,26 +36,26 @@ trainconf = dict(
     feature_conversion=LookUPSparseIDConversion,
 
     # 稀疏数据的最维数
-    hash_size = 2**15,
+    hash_size = 2**19,
 
     # 设置Embedding大小
-    emb_size = 4,
+    emb_size = 8,
 
     # deep部分配置
-    hidden_layers = [258, 128, 50],
+    hidden_layers = [128, 64, 32],
     hidden_act = tf.nn.relu,
 
     # 输出层配置
     output_act = tf.nn.sigmoid,
 
     # 正则项惩罚
-    regularizer = tf.contrib.layers.l2_regularizer(0.0001),
+    regularizer = tf.contrib.layers.l1_l2_regularizer(scale_l1=0.0, scale_l2=0.0003),
 
     # 参数初始化器
     initializer=tf.truncated_normal_initializer(stddev=1.0),
 
     # 设置优化器参数
-    learning_rate=0.1,
+    learning_rate=0.001,
 
     # 数据的轮数
     epochs = 2,
@@ -63,7 +63,7 @@ trainconf = dict(
     max_iteration = 100000,
 
     # 优化算法
-    optimal_algorithm=tf.train.GradientDescentOptimizer,
+    optimal_algorithm=tf.train.AdamOptimizer,
 
     # 模型和日志保存路径
     LOG_SAVE_PATH = "logs/",

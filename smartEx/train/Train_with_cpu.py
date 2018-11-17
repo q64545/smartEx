@@ -180,8 +180,6 @@ class Train_with_cpu(Train):
         Y_, X, y_, x = self._set_data_input()
         YY_ = reduce(lambda a, b: np.r_[a, b], Y_).astype(int)
 
-
-
         # 对输入进行特征工程
         x_one_hot = self._feature_engineer(x)
 

@@ -39,20 +39,20 @@ trainconf = dict(
     hash_size = 2**15,
 
     # deep部分配置
-    hidden_layers = [200,],
+    hidden_layers = [224,],
     hidden_act = tf.nn.relu,
 
     # BI层dropout概率
     bi_dropout_rate=0.5,
 
     # 隐向量长度k, k<<n, 一般为100以内
-    k=16,
+    k=8,
 
     # 输出层配置
     output_act = tf.nn.sigmoid,
 
     # 正则项惩罚
-    regularizer = tf.contrib.layers.l2_regularizer(0.0001),
+    regularizer=tf.contrib.layers.l1_l2_regularizer(scale_l1=0.0, scale_l2=0.001),
 
     # 参数初始化器
     initializer=tf.truncated_normal_initializer(stddev=1.0),
