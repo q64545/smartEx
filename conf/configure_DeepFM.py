@@ -13,17 +13,19 @@ from smartEx import *
 
 trainconf = dict(
     # 数据入口
-    data_train_path = "data/kaggle_data_train",
+    data_train_path = "movielens_datatools/data/movielens_train",
 
-    data_test_path = "data/kaggle_data_test",
+    data_test_path = "movielens_datatools/data/movielens_test",
+    # 定义特征个数
+    feature_nums = 3,
     # 数据入口方法
     data_input_fn_train = inputWithDataset,
 
     data_input_fn_test = inputWithPandas_batches,
     # 设置批量大小
-    batch_size = 400,
+    batch_size = 200,
 
-    batch_size_eval = 400,
+    batch_size_eval = 200,
     # 设置模型类型
     model_type = DeepFM,
 
@@ -55,15 +57,15 @@ trainconf = dict(
     initializer=tf.truncated_normal_initializer(stddev=1.0),
 
     # 设置优化器参数
-    learning_rate=0.01,
+    learning_rate=0.1,
 
     # 数据的轮数
-    epochs = 2,
+    epochs = 10000,
 
     max_iteration = 100000,
 
     # 优化算法
-    optimal_algorithm=tf.train.AdamOptimizer,
+    optimal_algorithm=tf.train.GradientDescentOptimizer,
 
     # 模型和日志保存路径
     LOG_SAVE_PATH = "logs/",

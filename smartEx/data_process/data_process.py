@@ -15,22 +15,22 @@ import numpy as np
 import os
 
 
-# file_path_debug = ["/Users/zengpan1/ads_sz_dev.data_proj/datahouse/python/biz/local_ctr_project/kaggle_datasets/data/train"]
+file_path_debug = "/Users/ken/workrelated/smartEx/movielens_datatools/data/movielens_test"
 
 
 
-def _parse_csv_data(raw_data):
-    record_defaults = [['0'] for _ in xrange(24)]
+def _parse_csv_data(raw_data, feature_size):
+    record_defaults = [['0'] for _ in xrange(feature_size+1)]
     col = tf.decode_csv(records=raw_data,
                   record_defaults=record_defaults,
-                  field_delim=',')
-    label = tf.slice(col, begin=[1], size=[1])
+                  field_delim='|')
+    label = tf.slice(col, begin=[0], size=[1])
     label = tf.string_to_number(label, tf.float32)
-    feature = tf.slice(col, begin=[2], size=[22])
+    feature = tf.slice(col, begin=[1], size=[feature_size])
     return label, feature
 
 
-def inputWithDataset(file_path, batch_size, epochs):
+def inputWithDataset(file_path, batch_size=100, epochs=1, feature_size=3):
     """file_path can be the path of a file or path of a dir"""
     # 获取file_path下的文件列表
     # files = tf.train.match_filenames_once(file_path)
@@ -39,7 +39,7 @@ def inputWithDataset(file_path, batch_size, epochs):
     # iterator0 = dataset.make_one_shot_iterator()
     dataset = dataset.flat_map(lambda filename: tf.data.TextLineDataset(filename).skip(1))
     # iterator1 = dataset.make_one_shot_iterator()
-    dataset = dataset.map(_parse_csv_data)
+    dataset = dataset.map(lambda k: _parse_csv_data(k, feature_size))
     # iterator2 = dataset.make_one_shot_iterator()
     dataset = dataset.shuffle(buffer_size=10000)
     dataset = dataset.batch(batch_size)
@@ -54,20 +54,20 @@ def inputWithDataset(file_path, batch_size, epochs):
 def inputWithPandas(file_path):
     """file_path must be the path of a file"""
     import pandas as pd
-    df = pd.read_csv(file_path, header=0, dtype=str, engine='c')
+    df = pd.read_csv(file_path, header=0, dtype=str, engine='c', sep='|')
     data = df.values
     data = data[:15000]
-    Y_ = data[:,1:2]
-    X = data[:,2:]
+    Y_ = data[:,0:1]
+    X = data[:,1:]
     return Y_, X
 
 def inputWithPandas_batches(file_path, batch_size):
     """file_path must be the path of a file"""
     import pandas as pd
-    df = pd.read_csv(file_path, header=0, dtype=str, engine='c')
+    df = pd.read_csv(file_path, header=0, dtype=str, engine='c', sep='|')
     data = df.values
-    y_ = data[:, 1:2]
-    x = data[:, 2:]
+    y_ = data[:, 0:1]
+    x = data[:, 1:]
     X = []
     Y_ = []
     nums = x.shape[0]
@@ -101,13 +101,10 @@ def testContribDataset(file_path, batch_size, epochs):
 
 
 def unit_test():
-    dataset = tf.data.Dataset.from_tensor_slices(np.array([1.0,2.0,3.0,4.0,5.0]))
-
-    iterator = dataset.make_one_shot_iterator()
-    one_element = iterator.get_next()
+    y_, x = inputWithDataset(file_path_debug)
     with tf.Session() as sess:
-        for i in range(5):
-            print(sess.run(one_element))
+        for i in range(10000):
+            print(sess.run(x))
 
 
 

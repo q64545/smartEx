@@ -16,6 +16,8 @@ trainconf = dict(
     data_train_path = "data/kaggle_data_train",
 
     data_test_path = "data/kaggle_data_test",
+    # 定义特征个数
+    feature_nums = 3,
     # 数据入口方法
     data_input_fn_train = inputWithDataset,
 

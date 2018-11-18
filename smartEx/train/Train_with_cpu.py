@@ -41,9 +41,10 @@ class Train_with_cpu(Train):
             data_input_fn_train = self.param_dict["data_input_fn_train"]
             batch_size = self.param_dict["batch_size"]
             epochs = self.param_dict["epochs"]
+            feature_nums = self.param_dict["feature_nums"]
             # 设置数据入口
             with self.graph.as_default():
-                y_, x = data_input_fn_train(data_train_path, batch_size, epochs)
+                y_, x = data_input_fn_train(data_train_path, batch_size, epochs, feature_nums)
             return y_, x
         elif use_tag == "test":
             # get the param
