@@ -38,7 +38,7 @@ trainconf = dict(
     feature_conversion=LookUPSparseIDConversion,
 
     # 稀疏数据的最维数
-    hash_size = 2**19,
+    hash_size = 2**20,
 
     # 设置Embedding大小
     emb_size = 8,
@@ -51,13 +51,13 @@ trainconf = dict(
     output_act = tf.nn.sigmoid,
 
     # 正则项惩罚
-    regularizer = tf.contrib.layers.l1_l2_regularizer(scale_l1=0.0, scale_l2=0.0003),
+    regularizer = tf.contrib.layers.l1_l2_regularizer(scale_l1=0.0, scale_l2=0.01),
 
     # 参数初始化器
     initializer=tf.truncated_normal_initializer(stddev=1.0),
 
     # 设置优化器参数
-    learning_rate=0.01,
+    learning_rate=0.1,
 
     # 数据的轮数
     epochs = 1000,

@@ -62,7 +62,7 @@ trainconf = dict(
     max_iteration = 100000,
 
     # 优化算法
-    optimal_algorithm=tf.train.GradientDescentOptimizer,
+    optimal_algorithm=tf.train.AdamOptimizer,
 
     # 模型和日志保存路径
     LOG_SAVE_PATH = "logs/",

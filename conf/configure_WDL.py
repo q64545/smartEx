@@ -48,7 +48,7 @@ trainconf = dict(
     hidden_act = tf.nn.relu,
 
     # wide部分配置
-    feature_interaction = ['0x1','0x2','1x2'],
+    feature_interaction = ['0x1', '0x2', '1x2'],
 
     # 输出层配置
     output_act = tf.nn.sigmoid,
@@ -63,7 +63,7 @@ trainconf = dict(
     learning_rate=0.01,
 
     # 数据的轮数
-    epochs = 2,
+    epochs = 1000,
 
     max_iteration = 100000,
 

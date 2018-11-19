@@ -57,15 +57,15 @@ trainconf = dict(
     initializer=tf.truncated_normal_initializer(stddev=1.0),
 
     # 设置优化器参数
-    learning_rate=0.1,
+    learning_rate=0.01,
 
     # 数据的轮数
     epochs = 10000,
 
-    max_iteration = 100000,
+    max_iteration = 100000000,
 
     # 优化算法
-    optimal_algorithm=tf.train.GradientDescentOptimizer,
+    optimal_algorithm=tf.train.AdamOptimizer,
 
     # 模型和日志保存路径
     LOG_SAVE_PATH = "logs/",
