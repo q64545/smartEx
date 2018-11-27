@@ -42,6 +42,7 @@ trainconf = dict(
 
     # deep部分配置
     hidden_layers = [224,],
+
     hidden_act = tf.nn.relu,
 
     # BI层dropout概率
