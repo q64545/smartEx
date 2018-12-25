@@ -18,3 +18,4 @@ from smartEx.models.MLPWithEmbedding import *
 from smartEx.models.Neural_Factorization_Machine import *
 from smartEx.models.Wide_n_Deep import *
 from smartEx.models.Attentional_Factorization_Machine import *
+from smartEx.models.Deep_n_Cross import *

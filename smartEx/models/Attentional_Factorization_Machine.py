@@ -81,6 +81,7 @@ class Attentional_Factorization_Machine(Model):
                 with tf.variable_scope("output"):
                     output_act = self.param_dict["output_act"]
                     afm = at_fm_score + fm1
+                    # out put shape (?, 1)
                     self.logit = afm
                     self.prob = output_act(afm)
 

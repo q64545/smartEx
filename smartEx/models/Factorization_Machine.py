@@ -51,6 +51,7 @@ class Factorization_Machine(Model):
                     fm2 = tf.expand_dims(fm2, 1)
                     fm1 = tf.reduce_sum(tf.nn.embedding_lookup(w_1, x), 0)
                     fm = w_0 + fm1 + fm2
+                    # out put shape (?, 1)
                     self.logit = fm
                     self.prob = tf.nn.sigmoid(fm)
 

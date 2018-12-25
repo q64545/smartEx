@@ -17,7 +17,7 @@ trainconf = dict(
 
     data_test_path = "movielens_datatools/data/movielens_test",
     # 定义特征个数
-    feature_nums = 3,
+    feature_nums = 4,
     # 数据入口方法
     data_input_fn_train = inputWithDataset,
 
@@ -55,7 +55,7 @@ trainconf = dict(
     regularizer = tf.contrib.layers.l1_l2_regularizer(scale_l1=0.0, scale_l2=0.01),
 
     # 设置优化器参数
-    learning_rate=0.1,
+    learning_rate=0.01,
 
     epochs = 1000,
 

@@ -33,6 +33,7 @@ class Logistic_Regression(Model):
                 b = tf.get_variable("biases", shape=[], initializer=initializer)
                 w_x = [tf.nn.embedding_lookup(w, x_i) for x_i in x]
                 lr = tf.reduce_sum(w_x, 0)+b
+                # out put shape (?, 1)
                 self.logit = lr
                 self.prob = tf.nn.sigmoid(lr)
 

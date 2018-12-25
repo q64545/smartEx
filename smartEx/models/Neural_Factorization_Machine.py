@@ -67,6 +67,7 @@ class Neural_Factorization_Machine(Model):
                     h = tf.get_variable("output_w", shape=[output_in.shape[1], 1], regularizer=regularizer, initializer=initializer)
                     # b = tf.get_variable(name="output_b", shape=[1,], initializer=tf.constant_initializer(0.0))
                     nfm = tf.matmul(output_in, h) + fm1
+                    # out put shape (?, 1)
                     self.logit = nfm
                     self.prob = output_act(nfm)
 

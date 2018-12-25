@@ -49,6 +49,7 @@ class Fieldaware_Factorization_Machine(Model):
                 w1 = tf.get_variable("w1", shape=[hash_size, 1], regularizer=regularizer, initializer=initializer)
                 ffm1 = tf.reduce_sum(tf.reshape(tf.nn.embedding_lookup(w1, x), [-1, num_feilds]), 1)
                 ffm = w0 + ffm1 + ffm2
+                # out put shape (?, 1)
                 self.logit = ffm
                 self.prob = tf.nn.sigmoid(ffm)
 

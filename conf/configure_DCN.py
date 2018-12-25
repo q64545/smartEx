@@ -17,7 +17,7 @@ trainconf = dict(
 
     data_test_path = "movielens_datatools/data/movielens_test",
     # 定义特征个数
-    feature_nums = 4,
+    feature_nums = 3,
     # 数据入口方法
     data_input_fn_train = inputWithDataset,
 
@@ -27,7 +27,7 @@ trainconf = dict(
 
     batch_size_eval = 200,
     # 设置模型类型
-    model_type = MLPWithEmbedding,
+    model_type = Deep_n_Cross,
 
     # 设置训练类型
     train_type = Train_with_cpu,
@@ -41,11 +41,14 @@ trainconf = dict(
     hash_size = 2**20,
 
     # 设置Embedding大小
-    emb_size = 8,
+    emb_size=8,
 
-    # deep部分配置
+    # deep net部分配置
     hidden_layers = [128, 64, 32],
     hidden_act = tf.nn.relu,
+
+    # cross net部分配置
+    cross_net_layers = 2,
 
     # 输出层配置
     output_act = tf.nn.sigmoid,

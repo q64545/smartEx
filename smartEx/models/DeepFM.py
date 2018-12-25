@@ -72,6 +72,7 @@ class DeepFM(Model):
                     output_in = fs_out
                     w = tf.get_variable("output_w", shape=[output_in.shape[1], 1], regularizer=regularizer, initializer=initializer)
                     deepfm = tf.matmul(output_in, w) + fm
+                    # out put shape (?, 1)
                     self.logit = deepfm
                     self.prob = output_act(deepfm)
 
