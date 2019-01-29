@@ -17,7 +17,7 @@ trainconf = dict(
 
     data_test_path = "movielens_datatools/data/movielens_test",
     # 定义特征个数
-    feature_nums = 3,
+    feature_nums = 4,
     # 数据入口方法
     data_input_fn_train = inputWithDataset,
 

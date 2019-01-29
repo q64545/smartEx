@@ -17,7 +17,7 @@ trainconf = dict(
 
     data_test_path = "movielens_datatools/data/movielens_test",
     # 定义特征个数
-    feature_nums = 3,
+    feature_nums = 4,
     # 数据入口方法
     data_input_fn_train = inputWithDataset,
 
@@ -41,12 +41,12 @@ trainconf = dict(
     hash_size = 2**20,
 
     # deep部分配置
-    hidden_layers = [224,],
+    hidden_layers = [128, 64, 32],
 
     hidden_act = tf.nn.relu,
 
     # BI层dropout概率
-    bi_dropout_rate=0.5,
+    bi_dropout_rate=1.0,
 
     # 隐向量长度k, k<<n, 一般为100以内
     k=8,

@@ -49,6 +49,7 @@ trainconf = dict(
 
     # wide部分配置
     feature_interaction = ['0x1', '0x2', '0x3', '1x2', '1x3', '2x3'],
+    # feature_interaction = [],
 
     # 输出层配置
     output_act = tf.nn.sigmoid,

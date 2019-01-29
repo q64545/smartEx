@@ -124,6 +124,8 @@ class Train_with_cpu(Train):
             with self.graph.as_default():
                 tf.summary.scalar('total_loss', loss)
 
+
+
             # 创建剩余OP
             saver = tf.train.Saver(self.graph.get_collection("variables"))
 
@@ -144,6 +146,8 @@ class Train_with_cpu(Train):
                     self.sess.run(init_ops)
                     self._transform_tensorboardLogs(LOG_SAVE_PATH)
                     summary_writer = tf.summary.FileWriter(LOG_SAVE_PATH, self.sess.graph)
+                    # 输出模型参数量大小
+                    self.print_model_scale()
 
                     for step in xrange(max_iteration):
                         # debug: begin
@@ -215,10 +219,11 @@ class Train_with_cpu(Train):
                         LOSS.append(loss_v)
                         PCTR_MEAN.append(pctr_mean_v)
                     Y = reduce(lambda a, b: np.r_[a, b], Y)
+                    LOSS = reduce(lambda a, b: np.r_[a, b] ,LOSS)
                     fpr, tpr, thresholds = metrics.roc_curve(y_true=YY_.flatten(), y_score=Y.flatten())
                     auc_scroe = metrics.auc(fpr, tpr)
 
 
-                    print("After %s training step(s), AUC score = %g" % (global_step, auc_scroe))
+                    print("After %s training step(s), AUC score = %g, loss = %g" % (global_step, auc_scroe, LOSS.flatten().mean()))
                 else:
                     print('No checkpoint file found')

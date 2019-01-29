@@ -60,6 +60,13 @@ class Train(object):
     def _build_test_flow(self):
         pass
 
+    def print_model_scale(self):
+        [print(var) for var in self.graph.get_collection("trainable_variables")]
+        whole_param_nums = reduce(lambda a,b: a+b, [reduce(lambda a, b: a * b, var.shape) if len(var.shape) > 0 else tf.Dimension(0) for var in self.graph.get_collection("trainable_variables")])
+        print("the whole param nums is : {}".format(whole_param_nums.value))
+
+
+
     def run_train_flow(self):
         self._build_train_flow()
 
